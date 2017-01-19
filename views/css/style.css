@@ -33,11 +33,15 @@ form {
   position: fixed;
   width: 256px;
   z-index: -1;
+  /*added the following property so that only the pizzas are updated not whole layout*/
+  backface-visibility: hidden;
 }
 
 .randomPizzaContainer {
   float: left;
   display: flex;
+  /*added the following property so that only the pizzas are updated not whole layout*/
+  /*backface-visibility: hidden;*/
 }
 
 .randomPizzaContainer:after {

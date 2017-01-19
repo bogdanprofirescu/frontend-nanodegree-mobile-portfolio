@@ -401,6 +401,7 @@ var pizzaElementGenerator = function(i) {
 // resizePizzas(size) is called when the slider in the "Our Pizzas" section of the website moves.
 var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
+//modified so that fewer DOM querries are made
   var pizzasize = document.getElementById("pizzaSize");
   // Changes the value for the size of the pizza above the slider
   function changeSliderLabel(size) {
@@ -449,10 +450,15 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+//changed the function so that the elements are identified within 1 querry instead of 4
+    var allPizzas=document.getElementsByClassName("randomPizzaContainer");
+
+//modified the loop so that it includes only the resize part
+    var dx = determineDx(allPizzas[0], size);
+    var newwidth = (allPizzas[0].offsetWidth + dx) + 'px';
+
+    for (var i = 0; i < allPizzas.length; i++) {
+            allPizzas[i].style.width = newwidth;
     }
   }
 
@@ -490,7 +496,7 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
   for (var i = numberOfEntries - 1; i > numberOfEntries - 11; i--) {
     sum = sum + times[i].duration;
   }
-  console.log("Average scripting time to generate last 10 frames: " + sum / 10 + "ms");
+  //console.log("Average scripting time to generate last 10 frames: " + sum / 10 + "ms");
 }
 
 // The following code for sliding background pizzas was pulled from Ilya's demo found at:
@@ -501,7 +507,9 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
+  // changed querySelectorAll with getElementsByClassName
+  var items = document.getElementsByClassName('mover');
+
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
@@ -524,7 +532,8 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  //chnaged the number of pizzas to 20 from 200, as 200 will never be visible
+  for (var i = 0; i < 20; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
