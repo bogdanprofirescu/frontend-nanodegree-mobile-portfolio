@@ -509,9 +509,11 @@ function updatePositions() {
 
   // changed querySelectorAll with getElementsByClassName
   var items = document.getElementsByClassName('mover');
-
+  //as suggested -removed from the loop the calculcation below since is a constant
+  var temp=document.body.scrollTop / 1250;
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    // var phase = Math.sin((document.body.scrollTop / 1250) + (i % 5));
+    var phase = Math.sin(temp + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -532,9 +534,11 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  //chnaged the number of pizzas to 20 from 200, as 200 will never be visible
-  for (var i = 0; i < 20; i++) {
-    var elem = document.createElement('img');
+  //as suggested
+  //changed again the number of pizzas from 20 ->48, to cover all screen sizes, as 200 will never be visible
+var elem;
+  for (var i = 0; i < 48; i++) {
+    elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
     elem.style.height = "100px";
